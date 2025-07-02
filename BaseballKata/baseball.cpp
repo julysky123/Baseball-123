@@ -21,14 +21,20 @@ public:
 		if (guessNumber == question) {
 			return { true, 3, 0 };
 		}
-		int ball = 0;
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (i == j) continue;
-				if (guessNumber[i] == question[j]) ball++;
-			}
+		int balls = countBalls(guessNumber);
+		return { false, 0, balls };
+	}
+
+	int countBalls(const std::string& guessNumber)
+	{
+		int ballCount = 0;
+		for (int index = 0; index < 3; index++) {
+			char targetNumber = guessNumber[index];
+			int position = static_cast<int>(question.find(targetNumber));
+			if (position == -1) continue;
+			if (position != index) ballCount++;
 		}
-		return { false, 0, ball };
+		return ballCount;
 	}
 
 private:
