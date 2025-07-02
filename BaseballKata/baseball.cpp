@@ -18,11 +18,9 @@ public:
 	}
 	GuessResult guess(const string& guessNumber) {
 		assertIllegalArgument(guessNumber);
-		if (guessNumber == question) {
-			return { true, 3, 0 };
-		}
-		return { false, 0, 0 };
+		return makeGuessResult(guessNumber);
 	}
+
 
 private:
 	string question;
@@ -46,5 +44,42 @@ private:
 		return guessNumber[0] == guessNumber[1]
 			|| guessNumber[0] == guessNumber[2]
 			|| guessNumber[1] == guessNumber[2];
+	}
+
+	const GuessResult makeGuessResult(const std::string& guessNumber)
+	{
+		if (isGuessCorrect(guessNumber)) {
+			return { true, 3, 0 };
+		}
+		int strikes = countStrikes(guessNumber);
+		int balls = countBalls(guessNumber);
+		return { false, strikes, balls };
+	}
+	bool isGuessCorrect(const std::string& guessNumber)
+	{
+		return guessNumber == question;
+	}
+	int countBalls(const std::string& guessNumber)
+	{
+		int ballCount = 0;
+		for (int index = 0; index < guessNumber.length(); index++) {
+			char targetNumber = guessNumber[index];
+			int position = static_cast<int>(question.find(targetNumber));
+			if (position == -1) continue;
+			if (position != index) ballCount++;
+		}
+		return ballCount;
+	}
+	
+	int countStrikes(const std::string& guessNumber)
+	{
+		int strikeCount = 0;
+		for (int index = 0; index < guessNumber.length(); index++) {
+			char targetNumber = guessNumber[index];
+			int position = static_cast<int>(question.find(targetNumber));
+			if (position == -1) continue;
+			if (position == index) strikeCount++;
+		}
+		return strikeCount;
 	}
 };
