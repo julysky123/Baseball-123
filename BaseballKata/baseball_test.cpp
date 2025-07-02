@@ -32,6 +32,13 @@ TEST_F(BaseballFixture, ReturnSolvedResultIfMatchedNumber) {
 	EXPECT_EQ(0, result.balls);
 }
 
+TEST_F(BaseballFixture, ReturnNoStrikeAndNoBallWhenNoDigitsMatch) {
+	GuessResult result = game.guess("456");
+	EXPECT_FALSE(result.solved);
+	EXPECT_EQ(0, result.strikes);
+	EXPECT_EQ(0, result.balls);
+}
+
 int main() {
 	::testing::InitGoogleMock();
 	return RUN_ALL_TESTS();
