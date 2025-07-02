@@ -21,8 +21,9 @@ public:
 		if (guessNumber == question) {
 			return { true, 3, 0 };
 		}
+		int strikes = countStrikes(guessNumber);
 		int balls = countBalls(guessNumber);
-		return { false, 0, balls };
+		return { false, strikes, balls };
 	}
 
 	int countBalls(const std::string& guessNumber)
@@ -37,6 +38,17 @@ public:
 		return ballCount;
 	}
 
+	int countStrikes(const std::string& guessNumber)
+	{
+		int strikeCount = 0;
+		for (int index = 0; index < 3; index++) {
+			char targetNumber = guessNumber[index];
+			int position = static_cast<int>(question.find(targetNumber));
+			if (position == -1) continue;
+			if (position == index) strikeCount++;
+		}
+		return strikeCount;
+	}
 private:
 	string question;
 	void assertIllegalArgument(const std::string& guessNumber)
