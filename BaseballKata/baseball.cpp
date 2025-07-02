@@ -4,13 +4,25 @@ using std::string;
 using std::length_error;
 using std::invalid_argument;
 
+struct GuessResult {
+	bool solved;
+	int strikes;
+	int balls;
+};
+
 class Baseball {
 public:
-	void guess(const string& guessNumber) {
+	explicit Baseball(const string& question)
+		: question(question)
+	{
+	}
+	GuessResult guess(const string& guessNumber) {
 		assertIllegalArgument(guessNumber);
+		return { true, 3, 0 };
 	}
 
 private:
+	string question;
 	void assertIllegalArgument(const std::string& guessNumber)
 	{
 		if (guessNumber.length() != 3) {
